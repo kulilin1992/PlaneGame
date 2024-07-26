@@ -12,6 +12,9 @@ public class PlayerInput : ScriptableObject, InputActions.IPlayerActions
     public event UnityAction<Vector2> onMove = delegate{};
 
     public event UnityAction onStopMove = delegate{};
+
+    public event UnityAction onAttack = delegate{};
+    public event UnityAction onStopAttack = delegate{};
     InputActions inputActions;
 
     void OnEnable()
@@ -47,6 +50,19 @@ public class PlayerInput : ScriptableObject, InputActions.IPlayerActions
         if (context.phase == InputActionPhase.Canceled)
         {
             onStopMove.Invoke();
+        }
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            //onMove?.Invoke();
+            onAttack.Invoke();
+        }
+        if (context.phase == InputActionPhase.Canceled)
+        {
+            onStopAttack.Invoke();
         }
     }
 }

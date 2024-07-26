@@ -22,6 +22,12 @@ public class Player : MonoBehaviour
     private Coroutine coroutine;
     new Rigidbody2D rigidbody;
 
+    [SerializeField] GameObject bulletPrefab;
+    [SerializeField] Transform attackPoint;
+
+    [SerializeField] float attackInterval = 0.1f;
+    WaitForSeconds waitForSeconds;
+
     void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
@@ -31,12 +37,17 @@ public class Player : MonoBehaviour
     {
         playerInput.onMove += OnMove;
         playerInput.onStopMove += StopMove;
+        playerInput.onAttack += OnAttack;
+        playerInput.onStopAttack += OnStopAttack;
     }
+
 
     void OnDisable()
     {
         playerInput.onMove -= OnMove;
         playerInput.onStopMove -= StopMove;
+        playerInput.onAttack -= OnAttack;
+        playerInput.onStopAttack -= OnStopAttack;
     }
 
 
@@ -67,6 +78,7 @@ public class Player : MonoBehaviour
     {
         rigidbody.gravityScale = 0f;
         playerInput.EnablePlayerInput();
+        waitForSeconds = new WaitForSeconds(attackInterval);
     }
 
     // Update is called once per frame
@@ -116,6 +128,29 @@ public class Player : MonoBehaviour
             //添加飞机旋转
             transform.rotation = Quaternion.Lerp(transform.rotation, moveRotation, time / movetime);
             yield return null;
+        }
+    }
+
+    void OnAttack()
+    {
+        //StartCoroutine(AttackCoroutine());
+        //StartCoroutine("AttackCoroutine");
+        StartCoroutine(nameof(AttackCoroutine));
+        //Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
+    }
+
+    void OnStopAttack()
+    {
+        StopCoroutine(nameof(AttackCoroutine));
+    }
+
+    IEnumerator AttackCoroutine()
+    {
+        while (true)
+        {
+            Instantiate(bulletPrefab, attackPoint.position, Quaternion.identity);
+            //yield return new WaitForSeconds(attackInterval);   尽量避免循环中new对象
+            yield return waitForSeconds;
         }
     }
 }
