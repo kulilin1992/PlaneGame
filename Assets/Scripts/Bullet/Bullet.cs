@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    [SerializeField] float speed = 25f;
-    [SerializeField] Vector2 direction;
+    [SerializeField] float speed = 10f;
+    [SerializeField] protected Vector2 direction;
 
-    void OnEnable()
+    protected GameObject target;
+
+
+    protected virtual void OnEnable()
     {
         StartCoroutine(MoveDirectly());
     }

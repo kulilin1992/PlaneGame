@@ -42,12 +42,12 @@ public class PlayerInput : ScriptableObject, InputActions.IPlayerActions
     }
     public void OnMove(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed)
+        if (context.performed)
         {
             //onMove?.Invoke();
             onMove.Invoke(context.ReadValue<Vector2>());
         }
-        if (context.phase == InputActionPhase.Canceled)
+        if (context.canceled)
         {
             onStopMove.Invoke();
         }
@@ -55,12 +55,12 @@ public class PlayerInput : ScriptableObject, InputActions.IPlayerActions
 
     public void OnAttack(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed)
+        if (context.performed)
         {
             //onMove?.Invoke();
             onAttack.Invoke();
         }
-        if (context.phase == InputActionPhase.Canceled)
+        if (context.canceled)
         {
             onStopAttack.Invoke();
         }

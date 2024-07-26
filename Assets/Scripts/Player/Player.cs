@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : MonoBehaviour
+public class Player : Character
 {
     [SerializeField] PlayerInput playerInput;
     // Start is called before the first frame update
@@ -20,6 +20,7 @@ public class Player : MonoBehaviour
     [SerializeField] float moveRotationAngle = 27f;
 
     private Coroutine coroutine;
+    Coroutine healthGenerateCoroutine;
     new Rigidbody2D rigidbody;
 
     [SerializeField] GameObject bulletPrefab;
@@ -34,13 +35,20 @@ public class Player : MonoBehaviour
     [SerializeField] float attackInterval = 0.1f;
     WaitForSeconds waitForSeconds;
 
+    [SerializeField] bool regenerateHealth = true;
+    [SerializeField] float regenerateHealthTime;
+    [SerializeField, Range(0f, 1f)] float regenerateHealthPercent = 0.1f;
+
+    WaitForSeconds waitHealthRegenerateTime;
+
     void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
     }
 
-    void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         playerInput.onMove += OnMove;
         playerInput.onStopMove += StopMove;
         playerInput.onAttack += OnAttack;
@@ -85,6 +93,9 @@ public class Player : MonoBehaviour
         rigidbody.gravityScale = 0f;
         playerInput.EnablePlayerInput();
         waitForSeconds = new WaitForSeconds(attackInterval);
+        waitHealthRegenerateTime = new WaitForSeconds(regenerateHealthTime);
+
+        //TakeDamage(50f);
     }
 
     // Update is called once per frame
@@ -193,4 +204,27 @@ public class Player : MonoBehaviour
             yield return waitForSeconds;
         }
     }
+
+    public override void TakeDamage(float damage)
+    {
+        base.TakeDamage(damage);
+
+        if (gameObject.activeSelf)
+        {
+            if (regenerateHealth)
+            {
+                if (healthGenerateCoroutine != null)
+                {
+                    StopCoroutine(healthGenerateCoroutine);
+                }
+                healthGenerateCoroutine = StartCoroutine(HealthRegenCoroutine(waitHealthRegenerateTime, regenerateHealthPercent));
+            }
+        }
+    }
+
+    // public override void RestoreHealth(float amount)
+    // {
+    //     base.RestoreHealth(amount);
+    //     Debug.Log("Player Restore Health" + curHealth + "\nTime" + Time.time);
+    // }
 }

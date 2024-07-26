@@ -5,6 +5,7 @@ using UnityEngine;
 public class PoolManager : MonoBehaviour
 {
     [SerializeField] Pool[] playerBulletPools;
+    [SerializeField] Pool[] enemyBulletPools;
 
     static Dictionary<GameObject, Pool> dictionary;
 
@@ -13,6 +14,7 @@ public class PoolManager : MonoBehaviour
     {
         dictionary = new Dictionary<GameObject, Pool>();
         Initialize(playerBulletPools);
+        Initialize(enemyBulletPools);
     }
 
 
@@ -21,6 +23,7 @@ public class PoolManager : MonoBehaviour
     {
         Debug.Log("aaa");
         CheckPoolSize(playerBulletPools);
+        CheckPoolSize(enemyBulletPools);
     }
     #endif
 
