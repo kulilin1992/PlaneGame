@@ -4964,7 +4964,7 @@ GameObject:
   - component: {fileID: 3034432733577462}
   - component: {fileID: 4590279820939118829}
   m_Layer: 0
-  m_Name: PlayerBullet
+  m_Name: PlayerBulletTri
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5000,7 +5000,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 25
-  direction: {x: 1, y: 0}
+  direction: {x: 1, y: -0.05}
 --- !u!114 &4590279820939118829
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -13,6 +13,9 @@ public class Pool
 
     Transform parent;
 
+    public int Size => size;
+    public int RuntimeSize => queue.Count;
+
     public void Initialize(Transform parent)
     {
         queue = new Queue<GameObject>();
@@ -24,7 +27,7 @@ public class Pool
     }
     GameObject Copy()
     {
-        GameObject obj = GameObject.Instantiate(prefab, parent);
+        var obj = GameObject.Instantiate(prefab, parent);
         obj.SetActive(false);
         return obj;
     }

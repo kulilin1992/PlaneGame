@@ -15,6 +15,30 @@ public class PoolManager : MonoBehaviour
         Initialize(playerBulletPools);
     }
 
+
+    #if UNITY_EDITOR
+    void OnDisable()
+    {
+        Debug.Log("aaa");
+        CheckPoolSize(playerBulletPools);
+    }
+    #endif
+
+    void CheckPoolSize(Pool[] pools)
+    {
+        foreach (Pool pool in pools)
+        {
+            if (pool.RuntimeSize > pool.Size)
+            {
+                Debug.LogWarning(
+                    string.Format("PoolManager: Pool for {0} has a runtime size of {1} which is greater than the size of {2}",
+                    pool.Prefab.name,
+                    pool.RuntimeSize,
+                    pool.Size));
+            }
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {

@@ -4,5 +4,14 @@ using UnityEngine;
 
 public class PlayerBullet : Bullet
 {
-    
+    TrailRenderer trail;
+    void Awake()
+    {
+        trail = GetComponentInChildren<TrailRenderer>();
+    }
+
+    void OnDisable()
+    {
+        trail.Clear();
+    }
 }

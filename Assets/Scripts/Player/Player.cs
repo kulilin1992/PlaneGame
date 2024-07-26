@@ -23,7 +23,13 @@ public class Player : MonoBehaviour
     new Rigidbody2D rigidbody;
 
     [SerializeField] GameObject bulletPrefab;
+    [SerializeField] GameObject bulletDoublePrefab;
+    [SerializeField] GameObject bulletTriPrefab;
+
+    [SerializeField, Range(0, 2)] int weaponLevel = 0;
     [SerializeField] Transform attackPoint;
+    [SerializeField] Transform attackTopPoint;
+    [SerializeField] Transform attackBottomPoint;
 
     [SerializeField] float attackInterval = 0.1f;
     WaitForSeconds waitForSeconds;
@@ -148,7 +154,41 @@ public class Player : MonoBehaviour
     {
         while (true)
         {
-            Instantiate(bulletPrefab, attackPoint.position, Quaternion.identity);
+            // switch (weaponLevel)
+            // {
+            //     case 0:
+            //         Instantiate(bulletPrefab, attackPoint.position, Quaternion.identity);
+            //         break;
+            //     case 1:
+            //         Instantiate(bulletPrefab, attackTopPoint.position, Quaternion.identity);
+            //         Instantiate(bulletPrefab, attackBottomPoint.position, Quaternion.identity);
+            //         break;
+            //     case 2:
+            //         Instantiate(bulletPrefab, attackPoint.position, Quaternion.identity);
+            //         Instantiate(bulletDoublePrefab, attackTopPoint.position, Quaternion.identity);
+            //         Instantiate(bulletTriPrefab, attackBottomPoint.position, Quaternion.identity);
+            //         break;
+            //     default:
+            //         break;
+            // }
+            switch (weaponLevel)
+            {
+                case 0:
+                    PoolManager.Release(bulletPrefab, attackPoint.position, Quaternion.identity);
+                    break;
+                case 1:
+                    PoolManager.Release(bulletPrefab, attackTopPoint.position, Quaternion.identity);
+                    PoolManager.Release(bulletPrefab, attackBottomPoint.position, Quaternion.identity);
+                    break;
+                case 2:
+                    PoolManager.Release(bulletPrefab, attackPoint.position, Quaternion.identity);
+                    PoolManager.Release(bulletDoublePrefab, attackTopPoint.position, Quaternion.identity);
+                    PoolManager.Release(bulletTriPrefab, attackBottomPoint.position, Quaternion.identity);
+                    break;
+                default:
+                    break;
+            }
+            //Instantiate(bulletPrefab, attackPoint.position, Quaternion.identity);
             //yield return new WaitForSeconds(attackInterval);   尽量避免循环中new对象
             yield return waitForSeconds;
         }
