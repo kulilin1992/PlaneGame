@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class Player : Character
 {
+    [SerializeField] StatsBarHud statsBarHud;
     [SerializeField] PlayerInput playerInput;
     // Start is called before the first frame update
     [SerializeField] float moveSpeed = 7f;
@@ -94,6 +95,8 @@ public class Player : Character
         playerInput.EnablePlayerInput();
         waitForSeconds = new WaitForSeconds(attackInterval);
         waitHealthRegenerateTime = new WaitForSeconds(regenerateHealthTime);
+
+        statsBarHud.Initialize(curHealth, maxHealth);
 
         //TakeDamage(50f);
     }
@@ -218,6 +221,8 @@ public class Player : Character
     {
         base.TakeDamage(damage);
 
+        statsBarHud.UpdateStats(curHealth, maxHealth);
+
         if (gameObject.activeSelf)
         {
             if (regenerateHealth)
@@ -231,9 +236,16 @@ public class Player : Character
         }
     }
 
-    // public override void RestoreHealth(float amount)
-    // {
-    //     base.RestoreHealth(amount);
-    //     Debug.Log("Player Restore Health" + curHealth + "\nTime" + Time.time);
-    // }
+    public override void RestoreHealth(float amount)
+    {
+        base.RestoreHealth(amount);
+        statsBarHud.UpdateStats(curHealth, maxHealth);
+    }
+
+    public override void Die()
+    {
+        statsBarHud.UpdateStats(0f, maxHealth);
+        base.Die();
+        //statsBarHud.gameObject.SetActive(false);
+    }
 }

@@ -6,18 +6,33 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     [SerializeField] GameObject deathVFX;
-    [SerializeField] float maxHealth;
+    [SerializeField] protected float maxHealth;
+    [SerializeField] StatsBar headHealthBar;
+    [SerializeField] bool showHeadHealthBar = true;
 
     protected float curHealth;
+    
 
     protected virtual void OnEnable()
     {
         curHealth = maxHealth;
+        if (showHeadHealthBar)
+        {
+            ShowHeadHealthBar();
+        }
+        else
+        {
+            HideHeadHealthBar();
+        }
     }
 
     public virtual void TakeDamage(float damage)
     {
         curHealth -= damage;
+        if (showHeadHealthBar)
+        {
+            headHealthBar.UpdateStats(curHealth, maxHealth);
+        }
         if (curHealth <= 0) 
             Die();
     }
@@ -37,6 +52,10 @@ public class Character : MonoBehaviour
         // curHealth += amount;
         // curHealth = Mathf.Clamp(curHealth, 0, maxHealth);
         curHealth = Mathf.Clamp(curHealth + amount, 0, maxHealth);
+        if (showHeadHealthBar)
+        {
+            headHealthBar.UpdateStats(curHealth, maxHealth);
+        }
     }
 
     protected IEnumerator HealthRegenCoroutine(WaitForSeconds waitTime, float percent)
@@ -57,5 +76,15 @@ public class Character : MonoBehaviour
             yield return waitTime;
             TakeDamage(maxHealth * percent);
         }
+    }
+
+    public void ShowHeadHealthBar()
+    {
+        headHealthBar.gameObject.SetActive(true);
+        headHealthBar.Initialize(curHealth, maxHealth);
+    }
+    public void HideHeadHealthBar()
+    {
+        headHealthBar.gameObject.SetActive(false);
     }
 }
