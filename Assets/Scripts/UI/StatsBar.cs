@@ -15,6 +15,8 @@ public class StatsBar : MonoBehaviour
     float currentFillAmount;
     protected float targetFillAmount;
 
+     float priviousFillAmount;
+
     float t;
     Canvas canvas;
 
@@ -64,7 +66,6 @@ public class StatsBar : MonoBehaviour
             bufferedFillingCoroutine = StartCoroutine(BufferedFillingCoroutine(fillImageFront));
         }
     }
-
     protected virtual IEnumerator BufferedFillingCoroutine(Image image)
     {
         if (delayFill)
@@ -72,10 +73,11 @@ public class StatsBar : MonoBehaviour
             yield return waitForDelayFill;
         }
         t = 0f;
+        priviousFillAmount = currentFillAmount;
         while (t < 1f)
         {
             t += Time.deltaTime * fillSpeed;
-            currentFillAmount = Mathf.Lerp(currentFillAmount, targetFillAmount, t);
+            currentFillAmount = Mathf.Lerp(priviousFillAmount, targetFillAmount, t);
             image.fillAmount = currentFillAmount;
             yield return null;
         }

@@ -35,6 +35,8 @@ public class Player : Character
     [SerializeField] Transform attackBottomPoint;
 
     [SerializeField] float attackInterval = 0.1f;
+
+    [SerializeField] AudioData bulletLaunchSFX;
     WaitForSeconds waitForSeconds;
 
     [SerializeField] bool regenerateHealth = true;
@@ -44,10 +46,19 @@ public class Player : Character
 
     [Header("---------Dodge---------")]
     [SerializeField, Range(0, 100)] int dodgeEnergyCost = 25;
-    [SerializeField] float maxRoll = 720f;
+    [SerializeField] float maxRoll = 360f;
     [SerializeField] float rollSpeed = 360f;
 
+    [SerializeField] AudioData dodgeSFX;
+
     [SerializeField] Vector3 dodgeScale = new Vector3(0.5f, 0.5f, 0.5f);
+
+
+    [Header("---------PowerDirve---------")]
+    [SerializeField] int powerDriveDodgeFactor = 2;
+    [SerializeField] float powerDriveSpeedFactor = 2f;
+    [SerializeField] float powerDriveFireFactor = 2f;
+
 
     float currentRoll;
 
@@ -55,14 +66,26 @@ public class Player : Character
 
     float dodgeDuartion;
 
+    bool isPowerDrive = false;
+
     WaitForSeconds waitHealthRegenerateTime;
-    
+    //WaitForSeconds waitForFireInterval;
+    WaitForSeconds waitForPowerDriveFireInterval;
     new Collider2D collider2D;
+
+    Vector2 previousVelocity;
+    Quaternion previousRotation;
+    WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
     void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         collider2D = GetComponent<Collider2D>();
         dodgeDuartion = maxRoll / rollSpeed;
+
+        rigidbody.gravityScale = 0f;
+        waitForSeconds = new WaitForSeconds(attackInterval);
+        waitForPowerDriveFireInterval = new WaitForSeconds(attackInterval / powerDriveFireFactor);
+        waitHealthRegenerateTime = new WaitForSeconds(regenerateHealthTime);
     }
 
     protected override void OnEnable()
@@ -73,8 +96,11 @@ public class Player : Character
         playerInput.onAttack += OnAttack;
         playerInput.onStopAttack += OnStopAttack;
         playerInput.onDodge += OnDodge;
-    }
+        playerInput.onPowerDrive += OnPowerDrive;
 
+        PlayerPowerDrive.on += PowerDriveOn;
+        PlayerPowerDrive.off += PowerDriveOff;
+    }
 
     void OnDisable()
     {
@@ -83,8 +109,10 @@ public class Player : Character
         playerInput.onAttack -= OnAttack;
         playerInput.onStopAttack -= OnStopAttack;
         playerInput.onDodge -= OnDodge;
+        playerInput.onPowerDrive -= OnPowerDrive;
+        PlayerPowerDrive.on -= PowerDriveOn;
+        PlayerPowerDrive.off -= PowerDriveOff;
     }
-
 
     private void OnMove(Vector2 moveInput)
     {
@@ -111,10 +139,10 @@ public class Player : Character
 
     void Start()
     {
-        rigidbody.gravityScale = 0f;
+        // rigidbody.gravityScale = 0f;
         playerInput.EnablePlayerInput();
-        waitForSeconds = new WaitForSeconds(attackInterval);
-        waitHealthRegenerateTime = new WaitForSeconds(regenerateHealthTime);
+        // waitForSeconds = new WaitForSeconds(attackInterval);
+        // waitHealthRegenerateTime = new WaitForSeconds(regenerateHealthTime);
 
         statsBarHud.Initialize(curHealth, maxHealth);
 
@@ -160,24 +188,26 @@ public class Player : Character
     IEnumerator MoveCoroutine(float movetime, Vector2 moveAmount, Quaternion moveRotation)
     {
         float time = 0f;
-        // while (time < movetime)
-        // {
-        //     time += Time.fixedDeltaTime / movetime;
-        //     rigidbody.velocity = Vector2.Lerp(Vector2.zero, moveAmount, time / movetime);
-
-        //     //添加飞机旋转
-        //     transform.rotation = Quaternion.Lerp(transform.rotation, moveRotation, time / movetime);
-        //     yield return null;
-        // }
-        while (time < 1f)
+        while (time < movetime)
         {
             time += Time.fixedDeltaTime / movetime;
-            rigidbody.velocity = Vector2.Lerp(Vector2.zero, moveAmount, time);
+            rigidbody.velocity = Vector2.Lerp(Vector2.zero, moveAmount, time / movetime);
 
             //添加飞机旋转
-            transform.rotation = Quaternion.Lerp(transform.rotation, moveRotation, time);
+            transform.rotation = Quaternion.Lerp(transform.rotation, moveRotation, time / movetime);
             yield return null;
         }
+        // previousVelocity = rigidbody.velocity;
+        // previousRotation = transform.rotation;
+        // while (time < 1f)
+        // {
+        //     time += Time.fixedDeltaTime / movetime;
+        //     rigidbody.velocity = Vector2.Lerp(previousVelocity, moveAmount, time);
+
+        //     //添加飞机旋转
+        //     transform.rotation = Quaternion.Lerp(previousRotation, moveRotation, time);
+        //     yield return waitForFixedUpdate;
+        // }
     }
 
     void OnAttack()
@@ -233,7 +263,17 @@ public class Player : Character
             }
             //Instantiate(bulletPrefab, attackPoint.position, Quaternion.identity);
             //yield return new WaitForSeconds(attackInterval);   尽量避免循环中new对象
-            yield return waitForSeconds;
+            AudioManager.Instance.PlayRandomSFX(bulletLaunchSFX);
+            //yield return waitForSeconds;
+            // if (isPowerDrive)
+            // {
+            //     yield return waitForPowerDriveFireInterval;
+            // }
+            // else
+            // {
+            //     yield return waitForSeconds;
+            // }
+            yield return isPowerDrive ? waitForPowerDriveFireInterval : waitForSeconds;
         }
     }
 
@@ -279,6 +319,7 @@ public class Player : Character
     IEnumerator DodgeCoroutine()
     {
         isDodging = true;
+        AudioManager.Instance.PlayRandomSFX(dodgeSFX);
         //消耗能量
         PlayerEnergy.Instance.UseEnergy(dodgeEnergyCost);
 
@@ -315,4 +356,31 @@ public class Player : Character
         collider2D.isTrigger = false;
         isDodging = false;
     }
+
+
+    #region  PowerDrive
+    private void OnPowerDrive()
+    {
+        if (!PlayerEnergy.Instance.IsEnoughEnergy(PlayerEnergy.MAX)) {
+            return;
+        }
+
+        PlayerPowerDrive.on.Invoke();
+    }
+
+    private void PowerDriveOff()
+    {
+        isPowerDrive = false;
+
+        dodgeEnergyCost /= powerDriveDodgeFactor;
+        moveSpeed /= powerDriveSpeedFactor;
+    }
+
+    private void PowerDriveOn()
+    {
+        isPowerDrive = true;
+        dodgeEnergyCost *= powerDriveDodgeFactor;
+        moveSpeed *= powerDriveSpeedFactor;
+    }
+    #endregion
 }

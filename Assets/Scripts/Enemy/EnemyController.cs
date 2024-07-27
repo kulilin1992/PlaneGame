@@ -15,6 +15,8 @@ public class EnemyController : MonoBehaviour
 
     [SerializeField] GameObject[] enemyBullets;
     [SerializeField] Transform enemyFirePoint;
+
+    [SerializeField] AudioData[] bulletLaunchSFX;
     void OnEnable()
     {
         //StartCoroutine(RandomMoveCoroutine());
@@ -33,18 +35,32 @@ public class EnemyController : MonoBehaviour
 
         Vector3 targetPosition = Viewport.Instance.EnemyHalfRightMovePosition(paddingX, paddingY);
 
+        // while (gameObject.activeSelf)
+        // {
+        //     if (Vector3.Distance(transform.position, targetPosition) > Mathf.Epsilon)
+        //     {
+        //         transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+        //         transform.rotation = Quaternion.AngleAxis((targetPosition - transform.position).normalized.y * moveRotationAngle, Vector3.right);
+        //     }
+        //     else
+        //     {
+        //         targetPosition = Viewport.Instance.EnemyHalfRightMovePosition(paddingX, paddingY);
+        //     }
+        //     yield return null;
+        // }
+
         while (gameObject.activeSelf)
         {
-            if (Vector3.Distance(transform.position, targetPosition) > Mathf.Epsilon)
+            if (Vector3.Distance(transform.position, targetPosition) >= moveSpeed * Time.fixedDeltaTime)
             {
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.fixedDeltaTime);
                 transform.rotation = Quaternion.AngleAxis((targetPosition - transform.position).normalized.y * moveRotationAngle, Vector3.right);
             }
             else
             {
                 targetPosition = Viewport.Instance.EnemyHalfRightMovePosition(paddingX, paddingY);
             }
-            yield return null;
+            yield return new WaitForFixedUpdate();
         }
     }
 
@@ -57,6 +73,7 @@ public class EnemyController : MonoBehaviour
             {
                 PoolManager.Release(enemyBullet, enemyFirePoint.position);
             }
+            AudioManager.Instance.PlayRandomSFX(bulletLaunchSFX);
         }
     }
 }

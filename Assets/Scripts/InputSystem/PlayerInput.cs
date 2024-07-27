@@ -17,6 +17,8 @@ public class PlayerInput : ScriptableObject, InputActions.IPlayerActions
     public event UnityAction onStopAttack = delegate{};
 
     public event UnityAction onDodge = delegate{};
+
+    public event UnityAction onPowerDrive = delegate{};
     InputActions inputActions;
 
     void OnEnable()
@@ -73,6 +75,14 @@ public class PlayerInput : ScriptableObject, InputActions.IPlayerActions
         if (context.performed)
         {
             onDodge.Invoke();
+        }
+    }
+
+    public void OnPowerDrive(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            onPowerDrive.Invoke();
         }
     }
 }

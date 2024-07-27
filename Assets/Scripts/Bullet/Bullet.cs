@@ -10,6 +10,8 @@ public class Bullet : MonoBehaviour
     [SerializeField] GameObject hitVFX;
     [SerializeField] float damage;
 
+    [SerializeField] AudioData[] hitSFX;
+
     protected GameObject target;
 
 
@@ -37,6 +39,7 @@ public class Bullet : MonoBehaviour
             // PoolManager.Release(hitVFX, contactPoint.point, Quaternion.LookRotation(contactPoint.normal));
 
             PoolManager.Release(hitVFX, collision.GetContact(0).point, Quaternion.LookRotation(collision.GetContact(0).normal));
+            AudioManager.Instance.PlayRandomSFX(hitSFX);
             gameObject.SetActive(false);
         }
     }

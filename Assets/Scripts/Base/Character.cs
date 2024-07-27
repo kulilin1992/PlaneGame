@@ -6,6 +6,8 @@ using UnityEngine;
 public class Character : MonoBehaviour
 {
     [SerializeField] GameObject deathVFX;
+
+    [SerializeField] AudioData[] deathAudio;
     [SerializeField] protected float maxHealth;
     [SerializeField] StatsBar headHealthBar;
     [SerializeField] bool showHeadHealthBar = true;
@@ -40,6 +42,7 @@ public class Character : MonoBehaviour
     public virtual void Die()
     {
         curHealth = 0f;
+        AudioManager.Instance.PlayRandomSFX(deathAudio);
         PoolManager.Release(deathVFX, transform.position);
         gameObject.SetActive(false); //TODO: Add pooling
     }

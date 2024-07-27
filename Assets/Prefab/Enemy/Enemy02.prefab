@@ -14652,6 +14652,9 @@ MonoBehaviour:
   enemyBullets:
   - {fileID: 5448883454256784833, guid: ce41948518e54d4448dbce0dc76cfe77, type: 3}
   enemyFirePoint: {fileID: 759698782}
+  bulletLaunchSFX:
+  - audioClip: {fileID: 8300000, guid: 56c2ee139e8c844ba9a3a17370e3b763, type: 3}
+    volume: 0.5
 --- !u!114 &562910683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14665,6 +14668,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deathVFX: {fileID: 2342042931496088306, guid: 97b415311529fa145aacd3eedaac728e, type: 3}
+  deathAudio:
+  - audioClip: {fileID: 8300000, guid: 9314f85ef4c5ea04a87a0323c78fdd2e, type: 3}
+    volume: 1
+  - audioClip: {fileID: 8300000, guid: 0f2184b0c1d094741b11e8f4077c52e9, type: 3}
+    volume: 1
   maxHealth: 8
   headHealthBar: {fileID: 3577050823806812080}
   showHeadHealthBar: 1
@@ -14800,6 +14808,10 @@ PrefabInstance:
     - target: {fileID: 5444037841973754108, guid: 1620ad5c48fa27c46b4d86cc82ac3f17, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5444037841973754111, guid: 1620ad5c48fa27c46b4d86cc82ac3f17, type: 3}
+      propertyPath: fillSpeed
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1620ad5c48fa27c46b4d86cc82ac3f17, type: 3}
