@@ -137,13 +137,22 @@ public class Player : Character
     IEnumerator MoveCoroutine(float movetime, Vector2 moveAmount, Quaternion moveRotation)
     {
         float time = 0f;
-        while (time < movetime)
+        // while (time < movetime)
+        // {
+        //     time += Time.fixedDeltaTime / movetime;
+        //     rigidbody.velocity = Vector2.Lerp(Vector2.zero, moveAmount, time / movetime);
+
+        //     //添加飞机旋转
+        //     transform.rotation = Quaternion.Lerp(transform.rotation, moveRotation, time / movetime);
+        //     yield return null;
+        // }
+        while (time < 1f)
         {
             time += Time.fixedDeltaTime / movetime;
-            rigidbody.velocity = Vector2.Lerp(Vector2.zero, moveAmount, time / movetime);
+            rigidbody.velocity = Vector2.Lerp(Vector2.zero, moveAmount, time);
 
             //添加飞机旋转
-            transform.rotation = Quaternion.Lerp(transform.rotation, moveRotation, time / movetime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, moveRotation, time);
             yield return null;
         }
     }

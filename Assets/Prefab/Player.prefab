@@ -29177,6 +29177,7 @@ GameObject:
   - component: {fileID: 6435389010079767248}
   - component: {fileID: 1767785864}
   - component: {fileID: 1767785863}
+  - component: {fileID: 1767785866}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -29224,7 +29225,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!114 &1767785863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29237,7 +29238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1100c8b7d92f3124ca377b57c3260335, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deathVFX: {fileID: 0}
+  deathVFX: {fileID: 1587261729604890, guid: 600ec83cba1cec448bf41a6607229741, type: 3}
   maxHealth: 100
   playerInput: {fileID: 11400000, guid: c97d782132878594ab5aaf862849b323, type: 2}
   moveSpeed: 10
@@ -29257,6 +29258,22 @@ MonoBehaviour:
   regenerateHealth: 1
   regenerateHealthTime: 12
   regenerateHealthPercent: 0.02
+--- !u!70 &1767785866
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6435389010079767255}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.03, y: -0.04}
+  m_Size: {x: 1, y: 0.42}
+  m_Direction: 1
 --- !u!1 &6758096032694626173
 GameObject:
   m_ObjectHideFlags: 0
