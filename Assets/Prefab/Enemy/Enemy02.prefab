@@ -14668,6 +14668,7 @@ MonoBehaviour:
   maxHealth: 8
   headHealthBar: {fileID: 3577050823806812080}
   showHeadHealthBar: 1
+  getDeathEmenyEnergy: 3
 --- !u!50 &-7692749356723547205
 Rigidbody2D:
   serializedVersion: 4

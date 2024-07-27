@@ -109,6 +109,7 @@ MonoBehaviour:
   maxHealth: 7
   headHealthBar: {fileID: 7017217383484319313}
   showHeadHealthBar: 1
+  getDeathEmenyEnergy: 3
 --- !u!50 &-3410993094066434115
 Rigidbody2D:
   serializedVersion: 4
@@ -14714,6 +14715,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 578449712315536098}
     m_Modifications:
+    - target: {fileID: 5444037841044191308, guid: 1620ad5c48fa27c46b4d86cc82ac3f17, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5444037841964151493, guid: 1620ad5c48fa27c46b4d86cc82ac3f17, type: 3}
+      propertyPath: m_FillAmount
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5444037841973754107, guid: 1620ad5c48fa27c46b4d86cc82ac3f17, type: 3}
       propertyPath: m_Name
       value: UI_EnemyHealthHud
