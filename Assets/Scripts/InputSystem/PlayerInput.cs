@@ -15,6 +15,8 @@ public class PlayerInput : ScriptableObject, InputActions.IPlayerActions
 
     public event UnityAction onAttack = delegate{};
     public event UnityAction onStopAttack = delegate{};
+
+    public event UnityAction onDodge = delegate{};
     InputActions inputActions;
 
     void OnEnable()
@@ -63,6 +65,14 @@ public class PlayerInput : ScriptableObject, InputActions.IPlayerActions
         if (context.canceled)
         {
             onStopAttack.Invoke();
+        }
+    }
+
+    public void OnDodge(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            onDodge.Invoke();
         }
     }
 }

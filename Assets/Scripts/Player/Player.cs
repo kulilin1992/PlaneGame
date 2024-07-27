@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -40,11 +41,28 @@ public class Player : Character
     [SerializeField] float regenerateHealthTime;
     [SerializeField, Range(0f, 1f)] float regenerateHealthPercent = 0.1f;
 
-    WaitForSeconds waitHealthRegenerateTime;
 
+    [Header("---------Dodge---------")]
+    [SerializeField, Range(0, 100)] int dodgeEnergyCost = 25;
+    [SerializeField] float maxRoll = 720f;
+    [SerializeField] float rollSpeed = 360f;
+
+    [SerializeField] Vector3 dodgeScale = new Vector3(0.5f, 0.5f, 0.5f);
+
+    float currentRoll;
+
+    bool isDodging = false;
+
+    float dodgeDuartion;
+
+    WaitForSeconds waitHealthRegenerateTime;
+    
+    new Collider2D collider2D;
     void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
+        collider2D = GetComponent<Collider2D>();
+        dodgeDuartion = maxRoll / rollSpeed;
     }
 
     protected override void OnEnable()
@@ -54,6 +72,7 @@ public class Player : Character
         playerInput.onStopMove += StopMove;
         playerInput.onAttack += OnAttack;
         playerInput.onStopAttack += OnStopAttack;
+        playerInput.onDodge += OnDodge;
     }
 
 
@@ -63,6 +82,7 @@ public class Player : Character
         playerInput.onStopMove -= StopMove;
         playerInput.onAttack -= OnAttack;
         playerInput.onStopAttack -= OnStopAttack;
+        playerInput.onDodge -= OnDodge;
     }
 
 
@@ -247,5 +267,52 @@ public class Player : Character
         statsBarHud.UpdateStats(0f, maxHealth);
         base.Die();
         //statsBarHud.gameObject.SetActive(false);
+    }
+
+    void OnDodge()
+    {
+        if (isDodging || !PlayerEnergy.Instance.IsEnoughEnergy(dodgeEnergyCost))
+            return;
+        StartCoroutine(nameof(DodgeCoroutine));
+    }
+
+    IEnumerator DodgeCoroutine()
+    {
+        isDodging = true;
+        //消耗能量
+        PlayerEnergy.Instance.UseEnergy(dodgeEnergyCost);
+
+        //让玩家无敌
+        collider2D.isTrigger = true;
+        var scale = transform.localScale;
+        currentRoll = 0f;
+        while (currentRoll < maxRoll)
+        {
+            currentRoll += Time.deltaTime * rollSpeed;
+            transform.rotation = Quaternion.AngleAxis(currentRoll, Vector3.right);
+
+            if (currentRoll < maxRoll / 2)
+            {
+                //scale -= (Time.deltaTime / dodgeDuartion) * Vector3.one;
+
+                scale.x = Mathf.Clamp(scale.x - Time.deltaTime / dodgeDuartion, dodgeScale.x, 1f);
+                scale.y = Mathf.Clamp(scale.y - Time.deltaTime / dodgeDuartion, dodgeScale.y, 1f);
+                scale.z = Mathf.Clamp(scale.z - Time.deltaTime / dodgeDuartion, dodgeScale.z, 1f);
+
+            }
+            else
+            {
+                //scale += (Time.deltaTime / dodgeDuartion) * Vector3.one;
+
+                scale.x = Mathf.Clamp(scale.x + Time.deltaTime / dodgeDuartion, dodgeScale.x, 1f);
+                scale.y = Mathf.Clamp(scale.y + Time.deltaTime / dodgeDuartion, dodgeScale.y, 1f);
+                scale.z = Mathf.Clamp(scale.z + Time.deltaTime / dodgeDuartion, dodgeScale.z, 1f);
+            }
+            transform.localScale = scale;
+
+            yield return null;
+        }
+        collider2D.isTrigger = false;
+        isDodging = false;
     }
 }

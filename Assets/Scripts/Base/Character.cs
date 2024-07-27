@@ -29,7 +29,7 @@ public class Character : MonoBehaviour
     public virtual void TakeDamage(float damage)
     {
         curHealth -= damage;
-        if (showHeadHealthBar)
+        if (showHeadHealthBar && gameObject.activeSelf)
         {
             headHealthBar.UpdateStats(curHealth, maxHealth);
         }

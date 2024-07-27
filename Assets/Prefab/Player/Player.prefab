@@ -29178,6 +29178,7 @@ GameObject:
   - component: {fileID: 1767785864}
   - component: {fileID: 1767785863}
   - component: {fileID: 1767785866}
+  - component: {fileID: 5833387044661830091}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -29243,6 +29244,7 @@ MonoBehaviour:
   maxHealth: 100
   headHealthBar: {fileID: 3582810878049376663}
   showHeadHealthBar: 1
+  statsBarHud: {fileID: 0}
   playerInput: {fileID: 11400000, guid: c97d782132878594ab5aaf862849b323, type: 2}
   moveSpeed: 10
   paddingX: 0.8
@@ -29277,6 +29279,19 @@ CapsuleCollider2D:
   m_Offset: {x: 0.03, y: -0.04}
   m_Size: {x: 1, y: 0.42}
   m_Direction: 1
+--- !u!114 &5833387044661830091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6435389010079767255}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b8f0a1d66a6f284cb5458e3c7d7c487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  energyBar: {fileID: 0}
 --- !u!1 &6758096032694626173
 GameObject:
   m_ObjectHideFlags: 0
@@ -43762,6 +43777,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6435389010079767248}
     m_Modifications:
+    - target: {fileID: 5444037841044191308, guid: 030fb49037ee31740a620ad31726d9c6, type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5444037841973754107, guid: 030fb49037ee31740a620ad31726d9c6, type: 3}
       propertyPath: m_Name
       value: UI_PlayerHealthHud
