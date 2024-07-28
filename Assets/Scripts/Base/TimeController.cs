@@ -9,6 +9,10 @@ public class TimeController : Singleton<TimeController>
     float defaulyFixedDeltaTime;
     float t;
 
+    //bool isGamePaused;
+
+    float timeScaleBeforePause;
+
     protected override void Awake()
     {
         base.Awake();
@@ -51,10 +55,12 @@ public class TimeController : Singleton<TimeController>
         t = 0f;
         while (t < 1f)
         {
-            t += Time.unscaledDeltaTime / duration;
-            //t += Time.deltaTime / duration;
-            Time.timeScale = Mathf.Lerp(1f, bulletTimeScale, t);
-            Time.fixedDeltaTime = defaulyFixedDeltaTime * Time.timeScale;
+            if (GameManager.GameState != GameState.Paused) {
+                t += Time.unscaledDeltaTime / duration;
+                //t += Time.deltaTime / duration;
+                Time.timeScale = Mathf.Lerp(1f, bulletTimeScale, t);
+                Time.fixedDeltaTime = defaulyFixedDeltaTime * Time.timeScale;
+            }
             yield return null;
         }
     }
@@ -64,10 +70,12 @@ public class TimeController : Singleton<TimeController>
         t = 0f;
         while (t < 1f)
         {
-            t += Time.unscaledDeltaTime / duration;
-            //t += Time.deltaTime / duration;
-            Time.timeScale = Mathf.Lerp(bulletTimeScale, 1f, t);
-            Time.fixedDeltaTime = defaulyFixedDeltaTime * Time.timeScale;
+            if (GameManager.GameState != GameState.Paused) {
+                t += Time.unscaledDeltaTime / duration;
+                //t += Time.deltaTime / duration;
+                Time.timeScale = Mathf.Lerp(bulletTimeScale, 1f, t);
+                Time.fixedDeltaTime = defaulyFixedDeltaTime * Time.timeScale;
+            }
             yield return null;
         }
     }
@@ -84,5 +92,17 @@ public class TimeController : Singleton<TimeController>
         yield return StartCoroutine(SlowInCoroutine(inDuration));
         yield return new WaitForSecondsRealtime(keepDuration);
         StartCoroutine(SlowOutCoroutine(outDuration));
+    }
+
+    public void PauseGame()
+    {
+        timeScaleBeforePause = Time.timeScale;
+        Time.timeScale = 0f;
+        //isGamePaused = true;
+    }
+    public void ResumeGame()
+    {
+        Time.timeScale = timeScaleBeforePause;
+        //isGamePaused = false;
     }
 }

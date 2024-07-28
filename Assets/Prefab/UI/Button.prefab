@@ -201,6 +201,7 @@ GameObject:
   - component: {fileID: 497497952089417108}
   - component: {fileID: 1624948297045688276}
   - component: {fileID: -6777185166335547380}
+  - component: {fileID: -5176908956031263226}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -332,3 +333,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-5176908956031263226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8321539306528763027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f75cef19de9f10469060b0896ab8e54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectSFX:
+    audioClip: {fileID: 8300000, guid: dc641f65cf098b14ca02ef2fb5e71102, type: 3}
+    volume: 2
+  submitSFX:
+    audioClip: {fileID: 8300000, guid: 0b225f85e360f3e449af6df12ff5e0ec, type: 3}
+    volume: 2

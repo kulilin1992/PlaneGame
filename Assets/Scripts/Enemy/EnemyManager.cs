@@ -43,7 +43,7 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         while (createEnemy)
         {
-            yield return waitUntilNoEnemy;
+            //yield return waitUntilNoEnemy;
 
             waveUI.SetActive(true);
             yield return waitTimeBetweenWaves;
@@ -63,6 +63,7 @@ public class EnemyManager : Singleton<EnemyManager>
             yield return waitTimeBetweenCreate;
         }
 
+        yield return waitUntilNoEnemy;
         waveNumber++;
     }
 

@@ -12,14 +12,18 @@ public class BgScroller : MonoBehaviour
         material = GetComponent<Renderer>().material;
     }
     // Start is called before the first frame update
-    void Start()
+    IEnumerator Start()
     {
-        
+        while (GameManager.GameState != GameState.GameOver)
+        {
+            material.mainTextureOffset += scrollerVelocity * Time.deltaTime;
+            yield return null;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        material.mainTextureOffset += scrollerVelocity * Time.deltaTime;
+        //material.mainTextureOffset += scrollerVelocity * Time.deltaTime;
     }
 }

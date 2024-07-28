@@ -84,11 +84,15 @@ public class Player : Character
     Vector2 previousVelocity;
     Quaternion previousRotation;
     WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
+
+    MissileSystem missile;
     void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
         collider2D = GetComponent<Collider2D>();
         dodgeDuartion = maxRoll / rollSpeed;
+
+        missile = GetComponent<MissileSystem>();
 
         var size = transform.GetChild(0).GetComponent<Renderer>().bounds.size;
         paddingX = size.x / 2f;
@@ -110,6 +114,7 @@ public class Player : Character
         playerInput.onStopAttack += OnStopAttack;
         playerInput.onDodge += OnDodge;
         playerInput.onPowerDrive += OnPowerDrive;
+        playerInput.onLanuchMissile += OnLanuchMissile;
 
         PlayerPowerDrive.on += PowerDriveOn;
         PlayerPowerDrive.off += PowerDriveOff;
@@ -123,9 +128,15 @@ public class Player : Character
         playerInput.onStopAttack -= OnStopAttack;
         playerInput.onDodge -= OnDodge;
         playerInput.onPowerDrive -= OnPowerDrive;
+        playerInput.onLanuchMissile -= OnLanuchMissile;
         PlayerPowerDrive.on -= PowerDriveOn;
         PlayerPowerDrive.off -= PowerDriveOff;
     }
+
+    // private void OnLanuchMissile()
+    // {
+    //     throw new NotImplementedException();
+    // }
 
     private void OnMove(Vector2 moveInput)
     {
@@ -319,6 +330,7 @@ public class Player : Character
 
     public override void Die()
     {
+        GameManager.GameState = GameState.GameOver;
         statsBarHud.UpdateStats(0f, maxHealth);
         base.Die();
         //statsBarHud.gameObject.SetActive(false);
@@ -405,4 +417,9 @@ public class Player : Character
         TimeController.Instance.BulletTime(1f, 1f);
     }
     #endregion
+
+    void OnLanuchMissile()
+    {
+        missile.Launch(attackPoint);
+    }
 }

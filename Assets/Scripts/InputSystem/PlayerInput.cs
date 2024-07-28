@@ -23,6 +23,8 @@ public class PlayerInput : ScriptableObject, InputActions.IPlayerActions, InputA
     public event UnityAction onPause = delegate{};
 
     public event UnityAction onUnPause = delegate{};
+
+    public event UnityAction onLanuchMissile = delegate{};
     InputActions inputActions;
 
     void OnEnable()
@@ -149,6 +151,14 @@ public class PlayerInput : ScriptableObject, InputActions.IPlayerActions, InputA
         if (context.performed)
         {
             onUnPause.Invoke();
+        }
+    }
+
+    public void OnLaunchMissile(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            onLanuchMissile.Invoke();
         }
     }
 }

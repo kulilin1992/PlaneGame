@@ -79,6 +79,9 @@ public class EnemyController : MonoBehaviour
         while (gameObject.activeSelf)
         {
             yield return new WaitForSeconds(Random.Range(minAttackInterval, maxAttackInterval));
+
+            if (GameManager.GameState == GameState.GameOver) yield break;
+
             foreach (var enemyBullet in enemyBullets)
             {
                 PoolManager.Release(enemyBullet, enemyFirePoint.position);

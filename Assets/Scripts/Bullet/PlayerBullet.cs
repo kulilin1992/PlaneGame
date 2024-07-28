@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerBullet : Bullet
 {
     TrailRenderer trail;
-    void Awake()
+    protected virtual void Awake()
     {
         trail = GetComponentInChildren<TrailRenderer>();
         if (direction != Vector2.right)

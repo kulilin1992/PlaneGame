@@ -18,6 +18,10 @@ public class GamePlayUIController : MonoBehaviour
     [SerializeField] Button optionButton;
     [SerializeField] Button mainMenuButton;
 
+    [Header("=========SFX===========")]
+    [SerializeField] AudioData pauseSFX;
+    [SerializeField] AudioData unPauseSFX;
+
     void OnEnable()
     {
         playerInput.onPause += Pause;
@@ -26,6 +30,11 @@ public class GamePlayUIController : MonoBehaviour
         resumeButton.onClick.AddListener(OnResumeButtonClicked);
         optionButton.onClick.AddListener(OnOptionButtonClicked);
         mainMenuButton.onClick.AddListener(OnMainMenuButtonClicked);
+
+        // PressedButtonBehaviour.buttonFunctionTable.Add(resumeButton.gameObject.name, OnResumeButtonClicked);
+        // PressedButtonBehaviour.buttonFunctionTable.Add(mainMenuButton.gameObject.name, OnMainMenuButtonClicked);
+        // PressedButtonBehaviour.buttonFunctionTable.Add(optionButton.gameObject.name, OnOptionButtonClicked);
+        
     }
 
     void Disable()
@@ -40,24 +49,33 @@ public class GamePlayUIController : MonoBehaviour
 
     void UnPause()
     {
+        // resumeButton.Select();
+        // resumeButton.animator.SetTrigger("Pressed");
         OnResumeButtonClicked();
+        AudioManager.Instance.PlaySFX(unPauseSFX);
     }
 
 
     void Pause()
     {
-        Time.timeScale = 0f;
+        //Time.timeScale = 0f;
+        GameManager.GameState = GameState.Paused;
+        TimeController.Instance.PauseGame();
         if (hudCanvas != null)
             hudCanvas.enabled = false;
         if (menuCanvas != null)
             menuCanvas.enabled = true;
         playerInput.EnablePauseMenuInput();
         playerInput.SwitchToDynamicUpdateMode();
+       // UIInput.Instance.SelectUI(resumeButton);
+       AudioManager.Instance.PlaySFX(pauseSFX);
     }
 
     void OnResumeButtonClicked()
     {
-        Time.timeScale = 1f;
+        //Time.timeScale = 1f;
+        GameManager.GameState = GameState.Playing;
+        TimeController.Instance.ResumeGame();
         if (hudCanvas != null)
            hudCanvas.enabled = true;
         if (menuCanvas != null)
@@ -74,7 +92,7 @@ public class GamePlayUIController : MonoBehaviour
     {
         menuCanvas.enabled = false;
         //playerInput.EnablePlayerInput();
-        playerInput.SwitchToFixedUpdateMode();
+        //playerInput.SwitchToFixedUpdateMode();
         SceneLoader.Instance.LoadMainMenu();
     }
 }

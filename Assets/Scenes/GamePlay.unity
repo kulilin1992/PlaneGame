@@ -676,6 +676,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 340467326}
   m_CullTransparentMesh: 1
+--- !u!1 &368446110 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6435389010079767255, guid: 69bf9c8dfe6a9e5479d5093236b17108, type: 3}
+  m_PrefabInstance: {fileID: 1382757368}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &368446117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 368446110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a15f1dd9e42f94a975de93c846c959, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missilePrefab: {fileID: 2523096243714385163, guid: 1b2c3ab1e0e61914ba3e10d026ca3023, type: 3}
+  launchSound:
+    audioClip: {fileID: 8300000, guid: 99331d0df4c708149b69b11b5a64d2f4, type: 3}
+    volume: 2
 --- !u!1 &457379225
 GameObject:
   m_ObjectHideFlags: 0
@@ -2463,6 +2484,12 @@ MonoBehaviour:
   resumeButton: {fileID: 6029822793691814205}
   optionButton: {fileID: 1646998511}
   mainMenuButton: {fileID: 1944370567}
+  pauseSFX:
+    audioClip: {fileID: 8300000, guid: a15c02ca5c68f1b49acceb37b5fcf5dd, type: 3}
+    volume: 3
+  unPauseSFX:
+    audioClip: {fileID: 8300000, guid: 5ed01e6577d92d44eaa707cc45807023, type: 3}
+    volume: 3
 --- !u!1 &1618821399
 GameObject:
   m_ObjectHideFlags: 0
@@ -2576,7 +2603,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 160}
+  m_AnchoredPosition: {x: 0, y: 137}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1622225197
@@ -2972,6 +2999,8 @@ MonoBehaviour:
     size: 28
   - prefab: {fileID: 3034432733577456, guid: eebb2026233d07349b6afe9f2c1a61b3, type: 3}
     size: 28
+  - prefab: {fileID: 2523096243714385163, guid: 1b2c3ab1e0e61914ba3e10d026ca3023, type: 3}
+    size: 6
   enemyBulletPools:
   - prefab: {fileID: 5448883454256784833, guid: 4bd475d00160c9a45b3a09f414ea5a21, type: 3}
     size: 10
@@ -2994,6 +3023,8 @@ MonoBehaviour:
     size: 30
   - prefab: {fileID: 5060298685065931927, guid: f26e74e12ff19034eb03d30866539314, type: 3}
     size: 30
+  - prefab: {fileID: 7203458116342931450, guid: 975f9549f84dd594a84456abeb05e287, type: 3}
+    size: 6
   enemyPools:
   - prefab: {fileID: 214778051926960383, guid: a624a0e3000461e4286965f8a65aedb6, type: 3}
     size: 3
@@ -3559,6 +3590,51 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7edd3fd1a8344441ab09a52e19f7df3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2144502881
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2144502883}
+  - component: {fileID: 2144502882}
+  m_Layer: 0
+  m_Name: Game Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2144502882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144502881}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 184785c1446a3e5469efde984ca58ff0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameState: 0
+--- !u!4 &2144502883
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2144502881}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6029822793691814202
 PrefabInstance:
   m_ObjectHideFlags: 0
