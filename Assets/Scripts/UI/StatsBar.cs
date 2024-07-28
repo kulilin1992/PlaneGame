@@ -26,8 +26,12 @@ public class StatsBar : MonoBehaviour
 
     void Awake()
     {
-        canvas = GetComponent<Canvas>();
-        canvas.worldCamera = Camera.main;
+        // canvas = GetComponent<Canvas>();
+        // canvas.worldCamera = Camera.main;
+        if (TryGetComponent<Canvas>(out Canvas canvas))
+        {
+            canvas.worldCamera = Camera.main;
+        }
         waitForDelayFill = new WaitForSeconds(fillDelay);
     }
 

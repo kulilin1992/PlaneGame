@@ -6,7 +6,7 @@ public class EnemyBulletAiming : Bullet
 {
     void Awake()
     {
-        target = GameObject.FindGameObjectWithTag("Player");
+        SetTarget(GameObject.FindGameObjectWithTag("Player"));
     }
 
     protected override void OnEnable()

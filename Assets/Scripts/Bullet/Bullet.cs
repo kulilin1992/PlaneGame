@@ -24,7 +24,8 @@ public class Bullet : MonoBehaviour
     {
         while (gameObject.activeSelf)
         {
-            transform.Translate(direction * speed * Time.deltaTime);
+            Move();
+            //transform.Translate(direction * speed * Time.deltaTime);
             yield return null;
         }
     }
@@ -42,5 +43,15 @@ public class Bullet : MonoBehaviour
             AudioManager.Instance.PlayRandomSFX(hitSFX);
             gameObject.SetActive(false);
         }
+    }
+
+    protected void SetTarget(GameObject target)
+    {
+        this.target = target;
+    }
+
+    public void Move()
+    {
+        transform.Translate(direction * speed * Time.deltaTime);
     }
 }

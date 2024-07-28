@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    [SerializeField] float paddingX;
-    [SerializeField] float paddingY;
+    // [SerializeField] float paddingX;
+    // [SerializeField] float paddingY;
     [SerializeField] float moveSpeed = 2f;
 
     [SerializeField] float moveRotationAngle = 25f;
@@ -17,6 +17,16 @@ public class EnemyController : MonoBehaviour
     [SerializeField] Transform enemyFirePoint;
 
     [SerializeField] AudioData[] bulletLaunchSFX;
+
+    float paddingX;
+    float paddingY;
+
+    void Awake()
+    {
+        var size = transform.GetChild(0).GetComponent<Renderer>().bounds.size;
+        paddingX = size.x / 2f;
+        paddingY = size.y / 2f;
+    }
     void OnEnable()
     {
         //StartCoroutine(RandomMoveCoroutine());

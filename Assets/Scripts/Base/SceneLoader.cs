@@ -12,12 +12,12 @@ public class SceneLoader : PersistenSingleton<SceneLoader>
     Color color;
     const string GAMEPLAY = "GamePlay";
 
+    const string MAIN_MENU = "Menu";
+
     void Load(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
     }
-
-    public void LoadGamePlay() => StartCoroutine(LoadSceneAsync(GAMEPLAY));
 
     IEnumerator LoadSceneAsync(string sceneName)
     {
@@ -36,6 +36,7 @@ public class SceneLoader : PersistenSingleton<SceneLoader>
         }
 
         //Load(sceneName);
+        yield return new WaitUntil(() => loading.progress >= 0.9f);
 
         loading.allowSceneActivation = true;
         //Fade in
@@ -47,4 +48,18 @@ public class SceneLoader : PersistenSingleton<SceneLoader>
         }
         transitionImage.gameObject.SetActive(false);
     }
+
+    // public void LoadGamePlay() => StartCoroutine(LoadSceneAsync(GAMEPLAY));
+    // public void LoadMainMenu() => StartCoroutine(LoadSceneAsync(MAIN_MENU));
+    public void LoadGamePlay()
+    {
+        StopAllCoroutines();
+        StartCoroutine(LoadSceneAsync(GAMEPLAY));
+    }
+    public void LoadMainMenu()
+    {
+        StopAllCoroutines();
+        StartCoroutine(LoadSceneAsync(MAIN_MENU));
+    }
+
 }

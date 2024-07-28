@@ -11,8 +11,8 @@ public class Player : Character
     [SerializeField] PlayerInput playerInput;
     // Start is called before the first frame update
     [SerializeField] float moveSpeed = 7f;
-    [SerializeField] float paddingX = 0.8f;
-    [SerializeField] float paddingY = 0.2f;
+    // [SerializeField] float paddingX = 0.8f;
+    // [SerializeField] float paddingY = 0.2f;
 
     //加速
     [SerializeField] float acceleationTime = 0.2f;
@@ -25,9 +25,12 @@ public class Player : Character
     Coroutine healthGenerateCoroutine;
     new Rigidbody2D rigidbody;
 
+    [Header("---------Fire---------")]
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] GameObject bulletDoublePrefab;
     [SerializeField] GameObject bulletTriPrefab;
+
+    [SerializeField] GameObject bulletPowerDrivePrefab;
 
     [SerializeField, Range(0, 2)] int weaponLevel = 0;
     [SerializeField] Transform attackPoint;
@@ -68,9 +71,14 @@ public class Player : Character
 
     bool isPowerDrive = false;
 
+    float paddingX;
+    float paddingY;
+
     WaitForSeconds waitHealthRegenerateTime;
     //WaitForSeconds waitForFireInterval;
     WaitForSeconds waitForPowerDriveFireInterval;
+
+    WaitForSeconds waitDecelerationTime;
     new Collider2D collider2D;
 
     Vector2 previousVelocity;
@@ -82,10 +90,15 @@ public class Player : Character
         collider2D = GetComponent<Collider2D>();
         dodgeDuartion = maxRoll / rollSpeed;
 
+        var size = transform.GetChild(0).GetComponent<Renderer>().bounds.size;
+        paddingX = size.x / 2f;
+        paddingY = size.y / 2f;
+
         rigidbody.gravityScale = 0f;
         waitForSeconds = new WaitForSeconds(attackInterval);
         waitForPowerDriveFireInterval = new WaitForSeconds(attackInterval / powerDriveFireFactor);
         waitHealthRegenerateTime = new WaitForSeconds(regenerateHealthTime);
+        waitDecelerationTime = new WaitForSeconds(decelerationTime);
     }
 
     protected override void OnEnable()
@@ -124,6 +137,7 @@ public class Player : Character
 
         Quaternion rotation = Quaternion.AngleAxis(moveRotationAngle * moveInput.y, Vector3.right);
         coroutine = StartCoroutine(MoveCoroutine(acceleationTime, moveInput.normalized * moveSpeed, rotation));
+        StopCoroutine(nameof(DecelerationCoroutine));
         StartCoroutine(nameof(MovePositionLimitCoroutine));
     }
 
@@ -134,7 +148,8 @@ public class Player : Character
         }
         //rigidbody.velocity = Vector2.zero;
         coroutine = StartCoroutine(MoveCoroutine(decelerationTime, Vector2.zero, Quaternion.identity));
-        StopCoroutine(nameof(MovePositionLimitCoroutine));
+        //StopCoroutine(nameof(MovePositionLimitCoroutine));
+        StartCoroutine(nameof(DecelerationCoroutine));
     }
 
     void Start()
@@ -145,7 +160,7 @@ public class Player : Character
         // waitHealthRegenerateTime = new WaitForSeconds(regenerateHealthTime);
 
         statsBarHud.Initialize(curHealth, maxHealth);
-
+        //StartCoroutine(nameof(MovePositionLimitCoroutine));
         //TakeDamage(50f);
     }
 
@@ -188,26 +203,26 @@ public class Player : Character
     IEnumerator MoveCoroutine(float movetime, Vector2 moveAmount, Quaternion moveRotation)
     {
         float time = 0f;
-        while (time < movetime)
-        {
-            time += Time.fixedDeltaTime / movetime;
-            rigidbody.velocity = Vector2.Lerp(Vector2.zero, moveAmount, time / movetime);
-
-            //添加飞机旋转
-            transform.rotation = Quaternion.Lerp(transform.rotation, moveRotation, time / movetime);
-            yield return null;
-        }
-        // previousVelocity = rigidbody.velocity;
-        // previousRotation = transform.rotation;
-        // while (time < 1f)
+        // while (time < movetime)
         // {
         //     time += Time.fixedDeltaTime / movetime;
-        //     rigidbody.velocity = Vector2.Lerp(previousVelocity, moveAmount, time);
+        //     rigidbody.velocity = Vector2.Lerp(Vector2.zero, moveAmount, time / movetime);
 
         //     //添加飞机旋转
-        //     transform.rotation = Quaternion.Lerp(previousRotation, moveRotation, time);
-        //     yield return waitForFixedUpdate;
+        //     transform.rotation = Quaternion.Lerp(transform.rotation, moveRotation, time / movetime);
+        //     yield return null;
         // }
+        previousVelocity = rigidbody.velocity;
+        previousRotation = transform.rotation;
+        while (time < 1f)
+        {
+            time += Time.fixedDeltaTime / movetime;
+            rigidbody.velocity = Vector2.Lerp(previousVelocity, moveAmount, time);
+
+            //添加飞机旋转
+            transform.rotation = Quaternion.Lerp(previousRotation, moveRotation, time);
+            yield return waitForFixedUpdate;
+        }
     }
 
     void OnAttack()
@@ -247,16 +262,16 @@ public class Player : Character
             switch (weaponLevel)
             {
                 case 0:
-                    PoolManager.Release(bulletPrefab, attackPoint.position, Quaternion.identity);
+                    PoolManager.Release(isPowerDrive? bulletPowerDrivePrefab : bulletPrefab, attackPoint.position, Quaternion.identity);
                     break;
                 case 1:
-                    PoolManager.Release(bulletPrefab, attackTopPoint.position, Quaternion.identity);
-                    PoolManager.Release(bulletPrefab, attackBottomPoint.position, Quaternion.identity);
+                    PoolManager.Release(isPowerDrive? bulletPowerDrivePrefab : bulletPrefab, attackTopPoint.position, Quaternion.identity);
+                    PoolManager.Release(isPowerDrive? bulletPowerDrivePrefab : bulletPrefab, attackBottomPoint.position, Quaternion.identity);
                     break;
                 case 2:
-                    PoolManager.Release(bulletPrefab, attackPoint.position, Quaternion.identity);
-                    PoolManager.Release(bulletDoublePrefab, attackTopPoint.position, Quaternion.identity);
-                    PoolManager.Release(bulletTriPrefab, attackBottomPoint.position, Quaternion.identity);
+                    PoolManager.Release(isPowerDrive? bulletPowerDrivePrefab : bulletPrefab, attackPoint.position, Quaternion.identity);
+                    PoolManager.Release(isPowerDrive? bulletPowerDrivePrefab : bulletDoublePrefab, attackTopPoint.position, Quaternion.identity);
+                    PoolManager.Release(isPowerDrive? bulletPowerDrivePrefab : bulletTriPrefab, attackBottomPoint.position, Quaternion.identity);
                     break;
                 default:
                     break;
@@ -357,6 +372,12 @@ public class Player : Character
         isDodging = false;
     }
 
+    IEnumerator DecelerationCoroutine()
+    {
+        yield return waitDecelerationTime;
+
+        StopCoroutine(nameof(MovePositionLimitCoroutine));
+    }
 
     #region  PowerDrive
     private void OnPowerDrive()
@@ -381,6 +402,7 @@ public class Player : Character
         isPowerDrive = true;
         dodgeEnergyCost *= powerDriveDodgeFactor;
         moveSpeed *= powerDriveSpeedFactor;
+        TimeController.Instance.BulletTime(1f, 1f);
     }
     #endregion
 }

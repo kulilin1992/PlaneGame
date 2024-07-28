@@ -19,6 +19,7 @@ public class PlayerEnergy : Singleton<PlayerEnergy>
     protected override void Awake()
     {
         base.Awake();
+        SetEnergy(MAX);
         waitForPowerDriveInterval = new WaitForSeconds(powerDriveInterval);
     }
 
