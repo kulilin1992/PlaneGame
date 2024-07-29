@@ -26,7 +26,7 @@ public class GamePlayUIController : MonoBehaviour
 
     void OnEnable()
     {
-        hudCanvas.enabled = true;
+        //hudCanvas.enabled = true;
         //resumeButton.Select();
         playerInput.onPause += Pause;
         playerInput.onUnPause += UnPause;

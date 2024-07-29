@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3034431009973023}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.267, y: -0.028, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4866,7 +4866,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 81945aab4555fa548925776068f59216, type: 2}
+  - {fileID: 2100000, guid: 09554f09e46a93646a966cd2abe6a5b1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5005,6 +5005,13 @@ MonoBehaviour:
   direction: {x: 1, y: 0.05}
   hitVFX: {fileID: 5060298685065931927, guid: 6775c68a79b34db4fa2fd4db2a4cdf74, type: 3}
   damage: 1
+  hitSFX:
+  - audioClip: {fileID: 8300000, guid: 75adfe9a619833445a701305b983e548, type: 3}
+    volume: 0.3
+  - audioClip: {fileID: 8300000, guid: e11a5a019377fbd4c81caa0adcb4c236, type: 3}
+    volume: 0.3
+  - audioClip: {fileID: 8300000, guid: bb6cdd13aeb95f743847b1cd460889bc, type: 3}
+    volume: 0.3
 --- !u!114 &4590279820939118829
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5065,4 +5072,4 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4

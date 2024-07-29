@@ -10,24 +10,26 @@ public class EnemyController : MonoBehaviour
 
     [SerializeField] float moveRotationAngle = 25f;
 
-    [SerializeField] float minAttackInterval;
-    [SerializeField] float maxAttackInterval;
+    [SerializeField] protected float minAttackInterval;
+    [SerializeField] protected float maxAttackInterval;
 
-    [SerializeField] GameObject[] enemyBullets;
-    [SerializeField] Transform enemyFirePoint;
+    [SerializeField] protected GameObject[] enemyBullets;
+    [SerializeField] protected Transform enemyFirePoint;
 
-    [SerializeField] AudioData[] bulletLaunchSFX;
+    [SerializeField] protected AudioData[] bulletLaunchSFX;
 
-    float paddingX;
-    float paddingY;
+    protected float paddingX;
+    protected float paddingY;
 
-    void Awake()
+
+    protected Vector3 targetPosition;
+    protected virtual void Awake()
     {
         var size = transform.GetChild(0).GetComponent<Renderer>().bounds.size;
         paddingX = size.x / 2f;
         paddingY = size.y / 2f;
     }
-    void OnEnable()
+    protected virtual void OnEnable()
     {
         //StartCoroutine(RandomMoveCoroutine());
         //StartCoroutine(EnemyAttackCoroutine());
@@ -43,7 +45,7 @@ public class EnemyController : MonoBehaviour
     {
         transform.position = Viewport.Instance.EnemyRandomPosition(paddingX, paddingY);
 
-        Vector3 targetPosition = Viewport.Instance.EnemyHalfRightMovePosition(paddingX, paddingY);
+        targetPosition = Viewport.Instance.EnemyHalfRightMovePosition(paddingX, paddingY);
 
         // while (gameObject.activeSelf)
         // {
@@ -74,7 +76,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    IEnumerator EnemyAttackCoroutine()
+    protected virtual IEnumerator EnemyAttackCoroutine()
     {
         while (gameObject.activeSelf)
         {

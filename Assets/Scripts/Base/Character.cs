@@ -30,8 +30,10 @@ public class Character : MonoBehaviour
 
     public virtual void TakeDamage(float damage)
     {
+        if (curHealth <= 0)
+            return;
         curHealth -= damage;
-        if (showHeadHealthBar && gameObject.activeSelf)
+        if (showHeadHealthBar)
         {
             headHealthBar.UpdateStats(curHealth, maxHealth);
         }

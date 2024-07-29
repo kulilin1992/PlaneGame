@@ -62,6 +62,8 @@ public class Player : Character
     [SerializeField] float powerDriveSpeedFactor = 2f;
     [SerializeField] float powerDriveFireFactor = 2f;
 
+    [SerializeField] float invincibleTime = 1f;
+
 
     float currentRoll;
 
@@ -79,6 +81,8 @@ public class Player : Character
     WaitForSeconds waitForPowerDriveFireInterval;
 
     WaitForSeconds waitDecelerationTime;
+
+    WaitForSeconds waitInvincibleTime;
     new Collider2D collider2D;
 
     Vector2 previousVelocity;
@@ -105,6 +109,7 @@ public class Player : Character
         waitForPowerDriveFireInterval = new WaitForSeconds(attackInterval / powerDriveFireFactor);
         waitHealthRegenerateTime = new WaitForSeconds(regenerateHealthTime);
         waitDecelerationTime = new WaitForSeconds(decelerationTime);
+        waitInvincibleTime = new WaitForSeconds(invincibleTime);
     }
 
     protected override void OnEnable()
@@ -161,6 +166,7 @@ public class Player : Character
             StopCoroutine(coroutine);
         }
         //rigidbody.velocity = Vector2.zero;
+        moveDerection = Vector2.zero;
         coroutine = StartCoroutine(MoveCoroutine(decelerationTime, Vector2.zero, Quaternion.identity));
         //StopCoroutine(nameof(MovePositionLimitCoroutine));
         StartCoroutine(nameof(DecelerationCoroutine));
@@ -290,6 +296,17 @@ public class Player : Character
                 default:
                     break;
             }
+
+            // if (!isPowerDrive)
+            // {
+            //     PoolManager.Release(bulletPrefab, attackPoint.position, Quaternion.identity);
+            // }
+            // else
+            // {
+            //     PoolManager.Release( bulletPowerDrivePrefab, attackPoint.position, Quaternion.identity);
+            // //     PoolManager.Release( bulletDoublePrefab, attackTopPoint.position, Quaternion.identity);
+            // //    PoolManager.Release(   bulletTriPrefab, attackBottomPoint.position, Quaternion.identity);
+            // }
             //Instantiate(bulletPrefab, attackPoint.position, Quaternion.identity);
             //yield return new WaitForSeconds(attackInterval);   尽量避免循环中new对象
             AudioManager.Instance.PlayRandomSFX(bulletLaunchSFX);
@@ -314,7 +331,8 @@ public class Player : Character
 
         if (gameObject.activeSelf)
         {
-            //OnMove(moveDerection);
+            OnMove(moveDerection);
+            StartCoroutine(nameof(PlayerInvincibleCoroutine));
             if (regenerateHealth)
             {
                 if (healthGenerateCoroutine != null)
@@ -426,5 +444,13 @@ public class Player : Character
     void OnLanuchMissile()
     {
         missile.Launch(attackPoint);
+    }
+
+    IEnumerator PlayerInvincibleCoroutine()
+    {
+        collider2D.isTrigger = true;
+        yield return waitInvincibleTime;
+
+        collider2D.isTrigger = false;
     }
 }

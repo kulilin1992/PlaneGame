@@ -10,6 +10,8 @@ public class Viewport : Singleton<Viewport>
     float maxY;
 
     float middleX;
+
+    public float MaxX => maxX;
     // Start is called before the first frame update
     void Start()
     {

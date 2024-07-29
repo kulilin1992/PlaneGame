@@ -18,5 +18,6 @@ public class PlayerPowerBullet : PlayerBullet
             //追踪敌人
             StartCoroutine(bulletSystem.TrackCoroutine(target));
         }
+        //base.OnEnable();
     }
 }

@@ -82,8 +82,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d526722e3fbd4c2468585623d555fca3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  paddingX: 0.8
-  paddingY: 0.4
   moveSpeed: 1
   moveRotationAngle: 35
   minAttackInterval: 2
@@ -118,6 +116,8 @@ MonoBehaviour:
   headHealthBar: {fileID: 7017217383484319313}
   showHeadHealthBar: 1
   getDeathEmenyEnergy: 3
+  scorePoint: 100
+  healthFactor: 2
 --- !u!50 &-3410993094066434115
 Rigidbody2D:
   serializedVersion: 4

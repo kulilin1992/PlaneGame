@@ -29247,14 +29247,12 @@ MonoBehaviour:
   deathAudio:
   - audioClip: {fileID: 8300000, guid: 1fd31868d68903d4f9e2c4a3b7ef98f3, type: 3}
     volume: 1
-  maxHealth: 100
+  maxHealth: 200
   headHealthBar: {fileID: 3582810878049376663}
   showHeadHealthBar: 1
   statsBarHud: {fileID: 0}
   playerInput: {fileID: 11400000, guid: c97d782132878594ab5aaf862849b323, type: 2}
   moveSpeed: 10
-  paddingX: 0.8
-  paddingY: 0.2
   acceleationTime: 0.35
   decelerationTime: 0.75
   moveRotationAngle: 27
@@ -29274,15 +29272,16 @@ MonoBehaviour:
   regenerateHealthTime: 12
   regenerateHealthPercent: 0.02
   dodgeEnergyCost: 25
-  maxRoll: 720
+  maxRoll: 360
   rollSpeed: 360
   dodgeSFX:
     audioClip: {fileID: 8300000, guid: 9fc03a91b5216b74394a6166059d68f2, type: 3}
     volume: 1
   dodgeScale: {x: 0.5, y: 0.5, z: 0.5}
   powerDriveDodgeFactor: 2
-  powerDriveSpeedFactor: 2
+  powerDriveSpeedFactor: 1.5
   powerDriveFireFactor: 2
+  invincibleTime: 1
 --- !u!70 &1767785866
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

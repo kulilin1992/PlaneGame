@@ -25,6 +25,11 @@ public class EnemyManager : Singleton<EnemyManager>
 
     List<GameObject> enemyList;
 
+    [Header("======BOSS======")]
+    [SerializeField] GameObject bossPrefab;
+    [SerializeField] int bossWaveNumber;
+
+
     WaitForSeconds waitTimeBetweenCreate;
     WaitForSeconds waitTimeBetweenWaves;
 
@@ -41,7 +46,7 @@ public class EnemyManager : Singleton<EnemyManager>
 
     IEnumerator Start()
     {
-        while (createEnemy)
+        while (createEnemy && GameManager.GameState != GameState.GameOver)
         {
             //yield return waitUntilNoEnemy;
 
@@ -55,12 +60,20 @@ public class EnemyManager : Singleton<EnemyManager>
 
     IEnumerator RandomSpawnCoroutine()
     {
-        enemyAmount = Mathf.Clamp(enemyAmount, minEnemyAmount + waveNumber / 3, maxEnemyAmount);
-        for (int i = 0; i < enemyAmount; i++)
+        if (waveNumber % bossWaveNumber == 0)
         {
-            var enemy = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
-            enemyList.Add(PoolManager.Release(enemy));
-            yield return waitTimeBetweenCreate;
+            var boss = PoolManager.Release(bossPrefab);
+            enemyList.Add(boss);
+        }
+        else
+        {
+            enemyAmount = Mathf.Clamp(enemyAmount, minEnemyAmount + waveNumber / bossWaveNumber, maxEnemyAmount);
+            for (int i = 0; i < enemyAmount; i++)
+            {
+                var enemy = enemyPrefabs[Random.Range(0, enemyPrefabs.Length)];
+                enemyList.Add(PoolManager.Release(enemy));
+                yield return waitTimeBetweenCreate;
+            }
         }
 
         yield return waitUntilNoEnemy;
