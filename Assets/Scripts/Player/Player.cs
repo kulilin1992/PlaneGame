@@ -86,6 +86,8 @@ public class Player : Character
     WaitForFixedUpdate waitForFixedUpdate = new WaitForFixedUpdate();
 
     MissileSystem missile;
+
+    Vector2 moveDerection;
     void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
@@ -146,6 +148,7 @@ public class Player : Character
         //Vector2 moveAmount = moveInput * moveSpeed;
         //rigidbody.velocity = moveInput * moveSpeed;
 
+        moveDerection = moveInput.normalized;
         Quaternion rotation = Quaternion.AngleAxis(moveRotationAngle * moveInput.y, Vector3.right);
         coroutine = StartCoroutine(MoveCoroutine(acceleationTime, moveInput.normalized * moveSpeed, rotation));
         StopCoroutine(nameof(DecelerationCoroutine));
@@ -311,6 +314,7 @@ public class Player : Character
 
         if (gameObject.activeSelf)
         {
+            //OnMove(moveDerection);
             if (regenerateHealth)
             {
                 if (healthGenerateCoroutine != null)
@@ -330,6 +334,7 @@ public class Player : Character
 
     public override void Die()
     {
+        GameManager.onGameOver?.Invoke();
         GameManager.GameState = GameState.GameOver;
         statsBarHud.UpdateStats(0f, maxHealth);
         base.Die();

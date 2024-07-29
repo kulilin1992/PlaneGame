@@ -14,5 +14,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Menu.unity
     guid: 985017b085c1f184fade593feab751b7
+  - enabled: 1
+    path: Assets/Scenes/HighScore.unity
+    guid: 3cc7ea366b169ad4aa31d4f2facb3ab2
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: de0c9391d5a41f14096acb7ee05b584c, type: 2}

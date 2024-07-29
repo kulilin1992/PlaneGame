@@ -13,19 +13,19 @@ public class UIInput : Singleton<UIInput>
     {
         base.Awake();
         UIInputModule = GetComponent<InputSystemUIInputModule>();
-        UIInputModule.enabled = false;
+        UIInputModule.enabled = true;
     }
 
     public void SelectUI(Selectable UIObject)
     {
         UIObject.Select();
         UIObject.OnSelect(null);
-        UIInputModule.enabled = true; // enable input system
+        //UIInputModule.enabled = true; // enable input system
     }
 
     public void DisableAllUIInputs()
     {
         playerInput.DisableAllInputs();
-        UIInputModule.enabled = false; // disable input system
+        //UIInputModule.enabled = false; // disable input system
     }
 }

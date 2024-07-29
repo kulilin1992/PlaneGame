@@ -14,6 +14,8 @@ public class SceneLoader : PersistenSingleton<SceneLoader>
 
     const string MAIN_MENU = "Menu";
 
+    const string SCORE = "HighScore";
+
     void Load(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
@@ -60,6 +62,12 @@ public class SceneLoader : PersistenSingleton<SceneLoader>
     {
         StopAllCoroutines();
         StartCoroutine(LoadSceneAsync(MAIN_MENU));
+    }
+
+    public void LoadScoreScene()
+    {
+        StopAllCoroutines();
+        StartCoroutine(LoadSceneAsync(SCORE));
     }
 
 }

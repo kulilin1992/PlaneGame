@@ -365,6 +365,122 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""GameOverScreen"",
+            ""id"": ""3c177198-2db5-4309-80e7-26d21c2f8d0a"",
+            ""actions"": [
+                {
+                    ""name"": ""ConfirmGameOver"",
+                    ""type"": ""Button"",
+                    ""id"": ""6d42a968-3ba0-48c0-9f7f-b4f267f58a36"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""fb1a12c2-d867-444f-ba47-e93a19a61f51"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""ConfirmGameOver"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d110f9c4-a78a-4974-ba16-af9b2478558a"",
+                    ""path"": ""<Keyboard>/anyKey"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""ConfirmGameOver"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""94d3a7da-3f81-4631-9d43-0c138dcffca2"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""ConfirmGameOver"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""633ff335-f8e4-476f-8894-3fd2b5b19b04"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""ConfirmGameOver"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""81cdc46e-a6b3-42d6-bdbc-a2e8b436fab4"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""ConfirmGameOver"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6321b472-8a0a-4601-8286-92dd9de93d4f"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""ConfirmGameOver"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""27a7d87a-2501-4aca-817a-9ef6a7a33ea9"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""ConfirmGameOver"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""61d2d9b1-467b-41dc-9bbf-942234af0e57"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""ConfirmGameOver"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""471482b6-7603-4233-8c1e-bd4533197e71"",
+                    ""path"": ""<Gamepad>/start"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""PC"",
+                    ""action"": ""ConfirmGameOver"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -402,6 +518,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         // PauseMenu
         m_PauseMenu = asset.FindActionMap("PauseMenu", throwIfNotFound: true);
         m_PauseMenu_Unpause = m_PauseMenu.FindAction("Unpause", throwIfNotFound: true);
+        // GameOverScreen
+        m_GameOverScreen = asset.FindActionMap("GameOverScreen", throwIfNotFound: true);
+        m_GameOverScreen_ConfirmGameOver = m_GameOverScreen.FindAction("ConfirmGameOver", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -563,6 +682,39 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         }
     }
     public PauseMenuActions @PauseMenu => new PauseMenuActions(this);
+
+    // GameOverScreen
+    private readonly InputActionMap m_GameOverScreen;
+    private IGameOverScreenActions m_GameOverScreenActionsCallbackInterface;
+    private readonly InputAction m_GameOverScreen_ConfirmGameOver;
+    public struct GameOverScreenActions
+    {
+        private @InputActions m_Wrapper;
+        public GameOverScreenActions(@InputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ConfirmGameOver => m_Wrapper.m_GameOverScreen_ConfirmGameOver;
+        public InputActionMap Get() { return m_Wrapper.m_GameOverScreen; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(GameOverScreenActions set) { return set.Get(); }
+        public void SetCallbacks(IGameOverScreenActions instance)
+        {
+            if (m_Wrapper.m_GameOverScreenActionsCallbackInterface != null)
+            {
+                @ConfirmGameOver.started -= m_Wrapper.m_GameOverScreenActionsCallbackInterface.OnConfirmGameOver;
+                @ConfirmGameOver.performed -= m_Wrapper.m_GameOverScreenActionsCallbackInterface.OnConfirmGameOver;
+                @ConfirmGameOver.canceled -= m_Wrapper.m_GameOverScreenActionsCallbackInterface.OnConfirmGameOver;
+            }
+            m_Wrapper.m_GameOverScreenActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @ConfirmGameOver.started += instance.OnConfirmGameOver;
+                @ConfirmGameOver.performed += instance.OnConfirmGameOver;
+                @ConfirmGameOver.canceled += instance.OnConfirmGameOver;
+            }
+        }
+    }
+    public GameOverScreenActions @GameOverScreen => new GameOverScreenActions(this);
     private int m_PCSchemeIndex = -1;
     public InputControlScheme PCScheme
     {
@@ -584,5 +736,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     public interface IPauseMenuActions
     {
         void OnUnpause(InputAction.CallbackContext context);
+    }
+    public interface IGameOverScreenActions
+    {
+        void OnConfirmGameOver(InputAction.CallbackContext context);
     }
 }

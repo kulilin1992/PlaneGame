@@ -5,12 +5,12 @@ using UnityEngine;
 public class PressedButtonBehaviour : StateMachineBehaviour
 {
 
-    public static Dictionary<string, System.Action> buttonFunctionTable;
+    public static Dictionary<string, UnityEngine.Events.UnityAction> buttonFunctionTable;
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 
     void Awake()
     {
-        buttonFunctionTable = new Dictionary<string, System.Action>();
+        buttonFunctionTable = new Dictionary<string, UnityEngine.Events.UnityAction>();
     }
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {

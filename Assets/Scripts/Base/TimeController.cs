@@ -97,6 +97,7 @@ public class TimeController : Singleton<TimeController>
     public void PauseGame()
     {
         timeScaleBeforePause = Time.timeScale;
+        //Debug.Log("PauseGame:" + timeScaleBeforePause);
         Time.timeScale = 0f;
         //isGamePaused = true;
     }

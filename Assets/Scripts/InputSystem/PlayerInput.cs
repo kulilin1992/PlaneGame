@@ -5,7 +5,11 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 [CreateAssetMenu(menuName = "Input System/Player Input")]
-public class PlayerInput : ScriptableObject, InputActions.IPlayerActions, InputActions.IPauseMenuActions
+public class PlayerInput : 
+    ScriptableObject, 
+    InputActions.IPlayerActions, 
+    InputActions.IPauseMenuActions,
+    InputActions.IGameOverScreenActions
 {
 
     //public event UnityAction onMove;
@@ -25,6 +29,8 @@ public class PlayerInput : ScriptableObject, InputActions.IPlayerActions, InputA
     public event UnityAction onUnPause = delegate{};
 
     public event UnityAction onLanuchMissile = delegate{};
+
+    public event UnityAction onGameOver = delegate{};
     InputActions inputActions;
 
     void OnEnable()
@@ -32,6 +38,7 @@ public class PlayerInput : ScriptableObject, InputActions.IPlayerActions, InputA
         inputActions = new InputActions();
         inputActions.Player.SetCallbacks(this);
         inputActions.PauseMenu.SetCallbacks(this);
+        inputActions.GameOverScreen.SetCallbacks(this);
     }
 
 
@@ -83,6 +90,11 @@ public class PlayerInput : ScriptableObject, InputActions.IPlayerActions, InputA
     public void EnablePauseMenuInput()
     {
         SwitchActionMap(inputActions.PauseMenu, true);
+    }
+
+    public void EnableGameOverScreenInput()
+    {
+         SwitchActionMap(inputActions.GameOverScreen, true);
     }
 
 
@@ -159,6 +171,14 @@ public class PlayerInput : ScriptableObject, InputActions.IPlayerActions, InputA
         if (context.performed)
         {
             onLanuchMissile.Invoke();
+        }
+    }
+
+    public void OnConfirmGameOver(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            onGameOver.Invoke();
         }
     }
 }
