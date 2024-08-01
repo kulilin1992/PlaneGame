@@ -11,6 +11,8 @@ public class PoolManager : MonoBehaviour
 
     [SerializeField] Pool[] enemyPools;
 
+    [SerializeField] Pool[] lootItemPools;
+
     static Dictionary<GameObject, Pool> dictionary;
 
     // Start is called before the first frame update
@@ -21,6 +23,7 @@ public class PoolManager : MonoBehaviour
         Initialize(enemyBulletPools);
         Initialize(vFxPools);
         Initialize(enemyPools);
+        Initialize(lootItemPools);
     }
 
 
@@ -32,6 +35,7 @@ public class PoolManager : MonoBehaviour
         CheckPoolSize(enemyBulletPools);
         CheckPoolSize(vFxPools);
         CheckPoolSize(enemyPools);
+        CheckPoolSize(lootItemPools);
     }
     #endif
 

@@ -8,9 +8,10 @@ public class Boss : Enemy
     BossHealthBar bossHealthBar;
 
     Canvas healthBarCanvas;
-
-    void Awake()
+    bool flag;
+    protected override void Awake()
     {
+        base.Awake();
         bossHealthBar = FindObjectOfType<BossHealthBar>();
         healthBarCanvas = bossHealthBar.GetComponentInChildren<Canvas>();
         //Debug.Log("Boss Health Bar: " + healthBarCanvas);
@@ -19,14 +20,19 @@ public class Boss : Enemy
     protected override void OnEnable()
     {
         base.OnEnable();
+        bossHealthBar.Initialize(curHealth, maxHealth);
         // bossHealthBar.Initialize(curHealth, maxHealth);
-        // healthBarCanvas.enabled = true; // Enable the health bar canvas when the boss is enabled
+        if (flag)
+        {
+            healthBarCanvas.enabled = true;
+        }
+        //healthBarCanvas.enabled = true; // Enable the health bar canvas when the boss is enabled
     }
 
     void Start() 
     {
-        bossHealthBar.Initialize(curHealth, maxHealth);
         healthBarCanvas.enabled = true;
+        flag = true;
     }
     protected override void OnCollisionEnter2D(Collision2D collision)
     {
@@ -52,4 +58,5 @@ public class Boss : Enemy
     {
         maxHealth += EnemyManager.Instance.WaveNumber * healthFactor;
     }
+
 }

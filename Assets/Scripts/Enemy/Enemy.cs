@@ -10,6 +10,13 @@ public class Enemy : Character
 
     [SerializeField] protected int healthFactor;
 
+    LootSpawner lootSpawner;
+
+
+    protected virtual void Awake()
+    {
+        lootSpawner = GetComponent<LootSpawner>();
+    }
     protected override void OnEnable()
     {
         SetHealth();
@@ -20,6 +27,7 @@ public class Enemy : Character
         ScoreManager.Instance.AddScore(scorePoint);
         PlayerEnergy.Instance.SetEnergy(getDeathEmenyEnergy);
         EnemyManager.Instance.RemoveEnemy(gameObject);
+        lootSpawner.SpawnCreate(transform.position);
         base.Die();
     }
 

@@ -37,6 +37,8 @@ public class Player : Character
     [SerializeField] Transform attackTopPoint;
     [SerializeField] Transform attackBottomPoint;
 
+    [SerializeField] ParticleSystem playerFireVFX;
+
     [SerializeField] float attackInterval = 0.1f;
 
     [SerializeField] AudioData bulletLaunchSFX;
@@ -92,6 +94,7 @@ public class Player : Character
     MissileSystem missile;
 
     Vector2 moveDerection;
+    ParticleSystem particleSystem;
     void Awake()
     {
         rigidbody = GetComponent<Rigidbody2D>();
@@ -99,7 +102,7 @@ public class Player : Character
         dodgeDuartion = maxRoll / rollSpeed;
 
         missile = GetComponent<MissileSystem>();
-
+        particleSystem = transform.Find("VFX_PlayerMuzzleFire").GetComponent<ParticleSystem>();
         var size = transform.GetChild(0).GetComponent<Renderer>().bounds.size;
         paddingX = size.x / 2f;
         paddingY = size.y / 2f;
@@ -249,12 +252,21 @@ public class Player : Character
     {
         //StartCoroutine(AttackCoroutine());
         //StartCoroutine("AttackCoroutine");
+
+        //bool isplay = playerFireVFX.isPlaying;
+        particleSystem.Play();
+        //playerFireVFX.Play();
         StartCoroutine(nameof(AttackCoroutine));
         //Instantiate(bulletPrefab, firePoint.position, Quaternion.identity);
     }
 
     void OnStopAttack()
     {
+         
+        //playerFireVFX.Stop();
+        if (particleSystem.isPlaying) {
+            particleSystem.Stop();
+        }
         StopCoroutine(nameof(AttackCoroutine));
     }
 
@@ -327,6 +339,7 @@ public class Player : Character
     {
         base.TakeDamage(damage);
 
+        WeaponPowerLevelDown();
         statsBarHud.UpdateStats(curHealth, maxHealth);
 
         if (gameObject.activeSelf)
@@ -446,6 +459,11 @@ public class Player : Character
         missile.Launch(attackPoint);
     }
 
+    public void PickUpMissile()
+    {
+        missile.PickUp();
+    }
+
     IEnumerator PlayerInvincibleCoroutine()
     {
         collider2D.isTrigger = true;
@@ -453,4 +471,25 @@ public class Player : Character
 
         collider2D.isTrigger = false;
     }
+
+    #region LootItemPickUp
+
+    public bool IsFullHealth => curHealth == maxHealth;
+
+    public bool IsFullPower => weaponLevel == 2;
+
+    public void WeaponPowerLevelUp()
+    {
+        weaponLevel += 1;
+        //weaponLevel = Mathf.Clamp(weaponLevel, 0, 2);
+        weaponLevel = Mathf.Min(weaponLevel, 2);
+    }
+
+    public void WeaponPowerLevelDown()
+    {
+        
+        //weaponLevel = Mathf.Clamp(weaponLevel, 0, 2);
+        weaponLevel = Mathf.Max(--weaponLevel, 0);
+    }
+    #endregion
 }

@@ -10,7 +10,9 @@ public class BossHealthBar : StatsBarHud
         //method1
         //percentText.text = string.Format("{0:N2}%", targetFillAmount * 100f) + "%";
         //method2
-        percentText.text = (targetFillAmount * 100f).ToString("f2") + "%";
+        //percentText.text = (targetFillAmount * 100f).ToString("f2") + "%";
+        //method3
+        percentText.text = targetFillAmount.ToString("P");
 
     }
 }

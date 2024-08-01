@@ -25,6 +25,17 @@ public class MissileSystem : MonoBehaviour
     {
         MissileDisplay.UpdateMissileCount(remainCount);
     }
+
+    public void PickUp()
+    {
+        remainCount ++;
+        MissileDisplay.UpdateMissileCount(remainCount);
+        if (remainCount == 1)
+        {   
+            MissileDisplay.UpdateMissileCoolDown(0f);
+            isReady = true;
+        }
+    }
     public void Launch(Transform bulletTransform)
     {
         if (remainCount == 0 || !isReady)
